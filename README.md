@@ -124,3 +124,194 @@ const element = <h1>Hello React!</h1>;
   </body>
 </html>
 ```
+
+#### [Reconciliation](https://ko.reactjs.org/docs/reconciliation.html)
+
+#### useState Lazy initilize
+
+```js
+const [state, setState] = useState(() => window.localStorage.get("key"));
+```
+
+#### Hook Flow
+
+useEffect -> render 후
+
+update시 : clean up(return) -> useEffect
+
+부모 render -> 자식 render -> 자식 useEffect -> 부모 useEffect
+
+#### useRef
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+    <div id="root"></div>
+    <script type="text/babel">
+      const rootElement = document.getElementById("root");
+
+      const App = () => {
+        const inputRef = React.useRef();
+        const divRef = React.useRef();
+
+        React.useEffect(() => {
+          inputRef.current.focus();
+          setTimeout(() => {
+            divRef.current.style.backgroundColor = "pink";
+          }, 1000);
+        }, []);
+
+        return (
+          <>
+            <input ref={inputRef} />
+            <div
+              ref={divRef}
+              style={{ height: 100, width: 300, backgroundColor: "brown" }}
+            />
+          </>
+        );
+      };
+
+      ReactDOM.render(<App />, rootElement);
+    </script>
+  </body>
+</html>
+```
+
+#### Form
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+    <script type="text/babel">
+      const root = document.getElementById("root");
+
+      const App = () => {
+        const handleSubmit = (event) => {
+          event.preventDefault();
+          console.dir(event.target.elements);
+          alert(`${event.target.elements.name.value}`);
+        };
+        return (
+          <form onSubmit={handleSubmit}>
+            <div className="form-example">
+              <label htmlFor="name">Enter your name: </label>
+              <input type="text" id="name" />
+            </div>
+            <div className="form-example">
+              <label htmlFor="email">Enter your email: </label>
+              <input type="email" id="email" />
+            </div>
+            <div className="form-example">
+              <input type="submit" value="Subscribe!" />
+            </div>
+          </form>
+        );
+      };
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
+```
+
+#### Error
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+    <script type="text/babel">
+      const root = document.getElementById("root");
+
+      class ErrorBoundary extends React.Component {
+        state = { error: null };
+        static getDerivedStateFromError(error) {
+          return { error };
+        }
+
+        render() {
+          const { error } = this.state;
+          if (error) {
+            return <this.props.fallback error={error} />;
+          }
+          return this.props.children;
+        }
+      }
+
+      const Fallback = ({ error }) => {
+        alert(error.message);
+        return <p>There is some Error...</p>;
+      };
+
+      const Child = () => {
+        throw new Error("child error");
+        return <p>child</p>;
+      };
+
+      const App = () => {
+        return (
+          <>
+            <p>App</p>
+            <ErrorBoundary fallback={Fallback}>
+              <Child />
+            </ErrorBoundary>
+          </>
+        );
+      };
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
+```
