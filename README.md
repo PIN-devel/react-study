@@ -193,6 +193,8 @@ update시 : clean up(return) -> useEffect
 
 #### Form
 
+> validation 체크 -> onChange에서
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -314,4 +316,116 @@ update시 : clean up(return) -> useEffect
     </script>
   </body>
 </html>
+```
+
+#### todo list
+
+> key 값을 주면 탭 포커스가 그대로임
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+    <script type="text/babel">
+      const root = document.getElementById("root");
+
+      const items = [
+        [
+          { id: 1, value: "todo1" },
+          { id: 2, value: "todo2" },
+          { id: 3, value: "todo3" },
+          { id: 4, value: "todo4" },
+          { id: 5, value: "todo5" },
+        ],
+        [
+          { id: 4, value: "todo4" },
+          { id: 1, value: "todo1" },
+          { id: 2, value: "todo2" },
+          { id: 5, value: "todo5" },
+          { id: 3, value: "todo3" },
+        ],
+        [
+          { id: 3, value: "todo3" },
+          { id: 1, value: "todo1" },
+          { id: 4, value: "todo4" },
+          { id: 2, value: "todo2" },
+          { id: 5, value: "todo5" },
+        ],
+        [
+          { id: 2, value: "todo2" },
+          { id: 1, value: "todo1" },
+          { id: 3, value: "todo3" },
+          { id: 4, value: "todo4" },
+          { id: 5, value: "todo5" },
+        ],
+      ];
+
+      const App = () => {
+        const [todos, setTodos] = React.useState(items[0]);
+
+        React.useEffect(() => {
+          const interval = setInterval(() => {
+            const random = Math.floor(Math.random() * 4);
+            setTodos(items[random]);
+          }, 1000);
+          return () => {
+            clearInterval(interval);
+          };
+        }, []);
+
+        const handleClick = (todo) => {
+          setTodos((todos) =>
+            todos.filter((el) => {
+              return el !== todo;
+            })
+          );
+        };
+
+        const handleRestoreClick = () => {
+          setTodos((prev) => [
+            ...prev,
+            todos.find((item) => !prev.includes(item)),
+          ]);
+        };
+
+        return (
+          <>
+            {todos.map((todo) => (
+              <div key={todo.id}>
+                <button onClick={() => handleClick(todo)}>{todo.value}</button>
+              </div>
+            ))}
+            <button onClick={handleRestoreClick}>Restore</button>
+          </>
+        );
+      };
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
+```
+
+#### Fetch
+
+```html
+
 ```
