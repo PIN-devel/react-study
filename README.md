@@ -427,5 +427,66 @@ update시 : clean up(return) -> useEffect
 #### Fetch
 
 ```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+    <script type="text/babel">
+      const root = document.getElementById("root");
 
+      const App = () => {
+        const [data, setData] = React.useState(null);
+        const [error, setError] = React.useState(null);
+
+        React.useEffect(() => {
+          fetch(
+            "https://raw.githubusercontent.com/techoi/raw-data-api/main/simple-api.json"
+          )
+            .then((response) => response.json())
+            .then((data) => setData(data.data))
+            .catch((error) => setError(error));
+        }, []);
+
+        if (error != null) {
+          return <p>{error.message}</p>;
+        }
+
+        if (data == null) {
+          return <p>Loading...</p>;
+        }
+
+        return (
+          <div>
+            <p>People</p>
+            {data.people.map((person) => (
+              <div>
+                <span>{person.name}</span>
+                <span>{person.age}</span>
+              </div>
+            ))}
+          </div>
+        );
+      };
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
 ```
