@@ -490,3 +490,11 @@ update시 : clean up(return) -> useEffect
   </body>
 </html>
 ```
+
+#### vs code setting.json
+```json
+"emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.triggerExpansionOnTab": true
+```
