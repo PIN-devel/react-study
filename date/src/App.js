@@ -4,6 +4,9 @@ import DayJsExample from "./components/DayJsExample";
 import MomentExample from "./components/MomentExample";
 import ReactQueryExample from "./components/ReactQueryExample";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import SwrExample from "./components/SwrExample";
+import MemoizationExample from "./components/Memoization/Memoization";
+import Example from "./components/Context/Example";
 
 const queryClient = new QueryClient();
 function App() {
@@ -12,10 +15,13 @@ function App() {
       {/* <MomentExample />
       <DayJsExample />
       <DateFnsExample /> */}
-      <QueryClientProvider client={queryClient}>
+      {/* <SwrExample /> */}
+      {/* <QueryClientProvider client={queryClient}>
         <ReactQueryExample />
         <ReactQueryDevtools />
-      </QueryClientProvider>
+      </QueryClientProvider> */}
+      {/* <MemoizationExample /> */}
+      <Example />
     </div>
   );
 }

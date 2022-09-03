@@ -10,6 +10,13 @@ const todos = [
 ];
 
 export const handlers = [
+  rest.get("/api/user/:id", async (req, res, ctx) => {
+    return res(
+      ctx.json({
+        name: "tim",
+      })
+    );
+  }),
   rest.get("/todos", async (req, res, ctx) => {
     return res(ctx.json(todos));
   }),
